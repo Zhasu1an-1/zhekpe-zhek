@@ -6,8 +6,8 @@ public class MainMenuUI : MonoBehaviour
 {
     public AudioSource clickAudio;
     public float delayBeforeStart = 1f;
-    
-    public int fightSceneIndex = 3;
+
+    public int fightSceneIndex = 2;
 
     public void StartDuel()
     {

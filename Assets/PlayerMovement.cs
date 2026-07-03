@@ -10,6 +10,9 @@ public class PlayerMovement : MonoBehaviour
     public float dashTime = 0.18f;
     public float dashCooldown = 1f;
 
+    [Header("Footstep Sound")]
+    public AudioSource walkingAudio;
+
     private CharacterController controller;
     private PlayerHealth playerHealth;
     private Animator animator;
@@ -35,6 +38,7 @@ public class PlayerMovement : MonoBehaviour
         MovePlayer();
         RotatePlayer();
         UpdateRunAnimation();
+        HandleWalkingSound();
     }
 
     void HandleMovementInput()
@@ -95,6 +99,24 @@ public class PlayerMovement : MonoBehaviour
         animator.SetBool("isRunning", isMoving && !isDashing);
     }
 
+    void HandleWalkingSound()
+    {
+        if (walkingAudio == null) return;
+
+        bool isMoving = moveDirection.magnitude > 0.1f && !isDashing;
+
+        if (isMoving)
+        {
+            if (!walkingAudio.isPlaying)
+                walkingAudio.Play();
+        }
+        else
+        {
+            if (walkingAudio.isPlaying)
+                walkingAudio.Stop();
+        }
+    }
+
     void StartDash()
     {
         dashDirection = moveDirection == Vector3.zero ? transform.forward : moveDirection;
@@ -102,6 +124,9 @@ public class PlayerMovement : MonoBehaviour
         isDashing = true;
         dashTimer = dashTime;
         lastDashTime = Time.time;
+
+        if (walkingAudio != null && walkingAudio.isPlaying)
+            walkingAudio.Stop();
 
         if (playerHealth != null)
             playerHealth.SetInvincible(true);

@@ -6,13 +6,13 @@ public class EnemyAI : MonoBehaviour
     public Transform player;
 
     [Header("Movement")]
-    public float moveSpeed = 2f;
-    public float retreatSpeed = 2f;
-    public float strafeSpeed = 1.5f;
+    public float moveSpeed = 2.5f;
+    public float retreatSpeed = 1.5f;
+    public float strafeSpeed = 1.2f;
 
-    public float minDistance = 1.4f;
-    public float stopDistance = 2.3f;
-    public float attackDistance = 2.8f;
+    public float minDistance = 1.2f;
+    public float stopDistance = 1.8f;
+    public float attackDistance = 2.6f;
 
     [Header("Damage")]
     public int lightDamage = 8;
@@ -24,12 +24,11 @@ public class EnemyAI : MonoBehaviour
     public float specialKnockbackForce = 8f;
 
     [Header("Attack Settings")]
-    public float attackCooldown = 1.3f;
+    public float attackCooldown = 1.1f;
     public float heavyChance = 0.35f;
-    public float aggressiveChance = 0.45f;
 
     [Header("Retreat")]
-    public float retreatAfterAttackTime = 0.5f;
+    public float retreatAfterAttackTime = 0.25f;
     private bool isRetreating = false;
     private float retreatTimer = 0f;
 
@@ -39,7 +38,6 @@ public class EnemyAI : MonoBehaviour
     private int currentSpirit = 0;
 
     private float lastAttackTime;
-
     private Animator animator;
 
     void Start()
@@ -71,29 +69,25 @@ public class EnemyAI : MonoBehaviour
             return;
         }
 
-        if (distance < minDistance)
-        {
-            RetreatFromPlayer();
-            isMoving = true;
-        }
-        else if (distance > stopDistance)
+        if (distance > attackDistance)
         {
             MoveTowardPlayer();
             isMoving = true;
         }
         else
         {
-            // Enemy жай тұрмайды, айналып қозғалады
-            if (Random.value < aggressiveChance)
+            TryAttack();
+
+            if (distance < minDistance)
+            {
+                RetreatFromPlayer();
+                isMoving = true;
+            }
+            else
             {
                 StrafeAroundPlayer();
                 isMoving = true;
             }
-        }
-
-        if (distance <= attackDistance)
-        {
-            TryAttack();
         }
 
         SetRunAnimation(isMoving);
@@ -109,7 +103,7 @@ public class EnemyAI : MonoBehaviour
         transform.rotation = Quaternion.Slerp(
             transform.rotation,
             Quaternion.LookRotation(direction),
-            Time.deltaTime * 8f
+            Time.deltaTime * 10f
         );
     }
 
@@ -143,11 +137,9 @@ public class EnemyAI : MonoBehaviour
         Vector3 directionToPlayer = player.position - transform.position;
         directionToPlayer.y = 0;
 
+        if (directionToPlayer == Vector3.zero) return;
+
         Vector3 sideDirection = Vector3.Cross(Vector3.up, directionToPlayer.normalized);
-
-        if (Random.value > 0.5f)
-            sideDirection = -sideDirection;
-
         transform.position += sideDirection * strafeSpeed * Time.deltaTime;
     }
 
@@ -175,6 +167,9 @@ public class EnemyAI : MonoBehaviour
 
     void LightAttack()
     {
+        if (animator != null)
+            animator.SetTrigger("hit");
+
         PlayerHealth health = player.GetComponent<PlayerHealth>();
 
         if (health != null)
@@ -188,6 +183,9 @@ public class EnemyAI : MonoBehaviour
 
     void HeavyAttack()
     {
+        if (animator != null)
+            animator.SetTrigger("Kick");
+
         PlayerHealth health = player.GetComponent<PlayerHealth>();
 
         if (health != null)
@@ -195,13 +193,14 @@ public class EnemyAI : MonoBehaviour
             health.TakeDamage(heavyDamage);
             ApplyPlayerKnockback(heavyKnockbackForce);
             AddSpirit(35);
-            Debug.Log("Enemy Heavy Attack");
+            Debug.Log("Enemy Heavy Kick");
         }
     }
 
     void SpecialAttack()
     {
-        TriggerAttackAnimation();
+        if (animator != null)
+            animator.SetTrigger("hit");
 
         PlayerHealth health = player.GetComponent<PlayerHealth>();
 
@@ -248,11 +247,5 @@ public class EnemyAI : MonoBehaviour
     {
         if (animator != null)
             animator.SetBool("isrunning", value);
-    }
-
-    void TriggerAttackAnimation()
-    {
-        if (animator != null)
-            animator.SetTrigger("attack");
     }
 }

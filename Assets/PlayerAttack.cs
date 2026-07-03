@@ -24,6 +24,9 @@ public class PlayerAttack : MonoBehaviour
 
     public GameObject hitEffectPrefab;
 
+    [Header("Power Up Sound")]
+    public AudioSource powerUpAudio;
+
     private int comboStep = 0;
     private float lastComboTime;
 
@@ -37,6 +40,12 @@ public class PlayerAttack : MonoBehaviour
     {
         animator = GetComponentInChildren<Animator>();
         UpdateSpiritBar();
+
+        if (powerUpAudio != null)
+        {
+            powerUpAudio.playOnAwake = false;
+            powerUpAudio.loop = false;
+        }
     }
 
     void Update()
@@ -114,6 +123,12 @@ public class PlayerAttack : MonoBehaviour
             return;
         }
 
+        if (powerUpAudio != null)
+        {
+            powerUpAudio.Stop();
+            powerUpAudio.Play();
+        }
+
         if (animator != null)
             animator.SetTrigger("PowerUp");
 
@@ -122,7 +137,7 @@ public class PlayerAttack : MonoBehaviour
         currentSpirit = 0;
         UpdateSpiritBar();
 
-        Debug.Log("Power Up Started");
+        Debug.Log("Power Up Started with Sound");
     }
 
     void DoSpecialDamage()

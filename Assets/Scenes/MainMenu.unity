@@ -5960,7 +5960,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::MainMenuUI
   clickAudio: {fileID: 191779000}
   delayBeforeStart: 1
-  fightSceneIndex: 3
+  fightSceneIndex: 2
 --- !u!4 &1684182272
 Transform:
   m_ObjectHideFlags: 0
