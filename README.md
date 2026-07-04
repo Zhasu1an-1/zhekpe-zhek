@@ -25,10 +25,10 @@ This project was created during a **48-hour Game Jam** as a complete playable Un
 
 | Resource | Status |
 |---|---|
-| 🎮 Playable Build | Coming soon |
-| 🎥 Gameplay Trailer | Coming soon |
-| 📸 Screenshots | Added |
-| 🧾 Release Version | Coming soon |
+| 📸 Screenshots | Available |
+| 🎮 Playable Build | Planned |
+| 🎥 Gameplay Trailer | Planned |
+| 🧾 Release Version | Planned |
 
 ---
 
