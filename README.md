@@ -27,7 +27,7 @@ This project was created during a **48-hour Game Jam** as a complete playable Un
 |---|---|
 | 🎮 Playable Build | Coming soon |
 | 🎥 Gameplay Trailer | Coming soon |
-| 📸 Screenshots | Coming soon |
+| 📸 Screenshots | Added |
 | 🧾 Release Version | Coming soon |
 
 ---
@@ -100,15 +100,20 @@ Both the player and the enemy have health bars. The duel ends when one warrior i
 
 ## 📸 Screenshots
 
-Screenshots will be added soon.
+### Main Menu
+![Main Menu](Screenshots/main-menu.png)
 
-Planned screenshots:
+### Duel Arena
+![Duel Arena](Screenshots/duel-arena.png)
 
-- Main menu
-- Duel arena
-- Sword combat
-- Special ability
-- Win/Lose screen
+### Combat
+![Combat](Screenshots/combat.png)
+
+### Special Ability
+![Special Ability](Screenshots/special-ability.png)
+
+### Win Screen
+![Win Screen](Screenshots/win-screen.png)
 
 ---
 
